@@ -1,0 +1,33 @@
+package com.dxunited.merchantservice.publisher;
+
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.kafka.core.KafkaTemplate;
+import org.springframework.kafka.support.SendResult;
+import org.springframework.stereotype.Component;
+import org.springframework.util.concurrent.ListenableFuture;
+import org.springframework.util.concurrent.ListenableFutureCallback;
+
+@Slf4j
+@Component
+public class MerchantEventPublisher {
+    @Autowired
+    KafkaTemplate<String, String> kafkaTemplate;
+
+    public void sendMessage(String topic, String message) {
+        log.info(String.format("Producing message -> %s", message));
+        ListenableFuture<SendResult<String, String>> ack = this.kafkaTemplate.send(topic, message);
+        ack.addCallback(new ListenableFutureCallback<SendResult<String, String>>() {
+            @Override
+            public void onFailure(Throwable ex) {
+                log.error("Merchant creation failed", ex.getMessage());
+            }
+
+            @Override
+            public void onSuccess(SendResult<String, String> result) {
+                log.debug("Merchant created", result.getRecordMetadata().toString());
+            }
+        });
+    }
+
+}
