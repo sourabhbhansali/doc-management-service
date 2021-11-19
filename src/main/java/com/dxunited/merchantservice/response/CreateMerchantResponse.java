@@ -15,5 +15,8 @@ import lombok.Data;
 @Builder
 @AllArgsConstructor
 public class CreateMerchantResponse<T> {
+	private boolean success;
+	private int status;
 	private String message;
+
 }

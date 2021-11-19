@@ -1,5 +1,6 @@
 package com.dxunited.merchantservice.config;
 
+import com.dxunited.merchantservice.exception.ErrorMessage;
 import com.dxunited.merchantservice.response.CreateMerchantResponse;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.http.HttpStatus;
@@ -20,7 +21,7 @@ public class RestAuthenticationEntryPoint implements AuthenticationFailureHandle
         response.setStatus(HttpStatus.OK.value());
         OutputStream out = response.getOutputStream();
         ObjectMapper mapper = new ObjectMapper();
-        mapper.writeValue(out, new CreateMerchantResponse( ex.getMessage()));
+        mapper.writeValue(out, new ErrorMessage(HttpStatus.FORBIDDEN, HttpStatus.FORBIDDEN.value(), ex.getMessage(), null));
         out.flush();
     }
 }

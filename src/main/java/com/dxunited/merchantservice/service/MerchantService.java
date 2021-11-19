@@ -22,23 +22,14 @@ public class MerchantService {
     private MerchantEventPublisher merchantEventPublisher;
     @Autowired
     private MerchantDBConnector merchantDBConnector;
-    @Autowired
-    private MerchantRepository merchantRepository;
-    @Autowired
-    private ObjectMapper mapper;
+
 
     @SneakyThrows
     public void createMerchantEvent(String value) {
          merchantEventPublisher.sendMessage(KafkaConstant.CREATE_MERCHANT, value);
     }
 
-    @SneakyThrows
     public void saveMerchant(String createMerchant) {
-        Map<String, String> merchantMap = mapper.readValue(createMerchant, HashMap.class);
-        Document merchantDocument = new Document();
-        merchantMap.entrySet().forEach(entry ->
-                merchantDocument.append(entry.getKey(), entry.getValue()));
-        MongoCollection<Document> merchantCollection = merchantDBConnector.getMerchantCollection();
-        merchantRepository.insertMerchant(merchantCollection, merchantDocument);
+        merchantDBConnector.saveMerchant(createMerchant);
     }
 }
