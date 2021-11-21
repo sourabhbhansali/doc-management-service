@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: merchants-service
+  namespace: default
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: merchants-service
+  template:
+    metadata:
+      labels:
+        app: merchants-service
+    spec:
+      containers:
+        - image: cmidhun/merchants-service:0.0.1-SNAPSHOT
+          name: merchants-service
+          imagePullPolicy: Always
+          resources:
+            requests:
+              memory: "50Mi"
+              cpu: "500m"
+            limits:
+              memory: "500Mi"
+              cpu: "2000m"
+          ports:
+            - containerPort: 8090

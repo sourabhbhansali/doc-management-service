@@ -1,0 +1,23 @@
+kafka:
+  consumer:
+    bootstrap-servers: 127.0.0.1:9092
+    group-id: merchant_service
+    auto-offset-reset: latest
+    key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+    value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+  producer:
+    topic: users
+    bootstrap-servers: 127.0.0.1:9092
+    key-serializer: org.apache.kafka.common.serialization.StringSerializer
+    value-serializer: org.apache.kafka.common.serialization.StringSerializer
+
+mongo:
+  host: localhost
+  username: rootuser
+  password: rootpass
+  port: 27017
+  database: merchant
+  collection: merchant
+
+test:
+  topic: users
