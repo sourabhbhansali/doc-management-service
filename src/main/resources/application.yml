@@ -5,12 +5,11 @@ mongo:
   port: 27017
   database: merchant
   merchant_collection: merchant
-  reference_collection: reference
 
 kafka:
   consumer:
     bootstrap-servers: localhost:9092
-    group-id: merchant_servicedb
+    group-id: tenant_product_service
     key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
     value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
   producer:

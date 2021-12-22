@@ -29,6 +29,7 @@ public class Merchant {
     private String status;
     private String createdDate;
     private String modifiedDate;
+    private String createdBy;
     private String modifiedBy;
     private String externalMaxRebate;
     private String minRebate;

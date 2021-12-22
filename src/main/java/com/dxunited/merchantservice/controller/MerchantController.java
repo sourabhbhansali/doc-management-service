@@ -30,4 +30,18 @@ public class MerchantController {
                 .build();
         return new ResponseEntity<>(createMerchantResponse, HttpStatus.OK);
     }
+
+    @ApiOperation(value = "Update Merchant")
+    @PutMapping("{tenantId}/{siteId}")
+    @ApiImplicitParam(name = HttpHeaders.AUTHORIZATION, value = "Authorization", required = true, paramType = "header", dataTypeClass = String.class)
+    public ResponseEntity<CreateMerchantResponse> updateMerchant(@RequestHeader(value = HttpHeaders.AUTHORIZATION) String authorization,
+                                                                 String correlationId,
+                                                                 @PathVariable("tenantId") Long tenantId,
+                                                                 @PathVariable("siteId") Long siteId,
+                                                                 @RequestBody String merchantString) throws JsonProcessingException {
+        merchantservice.updateMerchantEvent(merchantString,tenantId, siteId);
+        CreateMerchantResponse createMerchantResponse = CreateMerchantResponse.builder().success(true).status(HttpStatus.OK.value()).message("Merchant Updated")
+                .build();
+        return new ResponseEntity<>(createMerchantResponse, HttpStatus.OK);
+    }
 }

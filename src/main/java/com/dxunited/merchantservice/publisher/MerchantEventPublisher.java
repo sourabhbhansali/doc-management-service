@@ -14,20 +14,9 @@ public class MerchantEventPublisher {
     @Autowired
     KafkaTemplate<String, String> kafkaTemplate;
 
-    public void sendMessage(String topic, String message) {
+    public ListenableFuture<SendResult<String, String>> sendMessage(String topic, String message) {
         log.info(String.format("Producing message -> %s", message));
-        ListenableFuture<SendResult<String, String>> ack = this.kafkaTemplate.send(topic, message);
-        ack.addCallback(new ListenableFutureCallback<SendResult<String, String>>() {
-            @Override
-            public void onFailure(Throwable ex) {
-                log.error("Merchant creation failed", ex.getMessage());
-            }
-
-            @Override
-            public void onSuccess(SendResult<String, String> result) {
-                log.debug("Merchant created", result.getRecordMetadata().toString());
-            }
-        });
+        return this.kafkaTemplate.send(topic, message);
     }
 
 }

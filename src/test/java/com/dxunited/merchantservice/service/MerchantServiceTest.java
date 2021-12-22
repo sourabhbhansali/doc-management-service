@@ -15,22 +15,23 @@ import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
 public class MerchantServiceTest {
-    @InjectMocks
+    @Mock
     MerchantService merchantService;
-
-    @Mock
-    private MerchantRepository merchantRepository ;
-
-    @Mock
-    private MerchantEventPublisher merchantEventPublisher;
     @Mock
     MerchantDBConnector merchantDBConnector;
 
     @Test
     public void shouldCreateMerchant() throws Exception {
-        doNothing().when(merchantEventPublisher).sendMessage(Mockito.anyString(), Mockito.anyString());
-        merchantEventPublisher.sendMessage(Mockito.anyString(), Mockito.anyString());
-        Mockito.verify(merchantEventPublisher, times(1)).sendMessage(Mockito.anyString(), Mockito.anyString());
+        doNothing().when(merchantService).createMerchantEvent(Mockito.anyString());
+        merchantService.createMerchantEvent(Mockito.anyString());
+        Mockito.verify(merchantService, times(1)).createMerchantEvent(Mockito.anyString());
+    }
+
+    @Test
+    public void shouldUpdateMerchantEvent() throws Exception {
+        doNothing().when(merchantService).updateMerchantEvent(Mockito.anyString(), Mockito.anyLong(), Mockito.anyLong());
+        merchantService.updateMerchantEvent(Mockito.anyString(), Mockito.anyLong(), Mockito.anyLong());
+        Mockito.verify(merchantService, times(1)).updateMerchantEvent(Mockito.anyString(), Mockito.anyLong(), Mockito.anyLong());
     }
 
     @Test
@@ -38,6 +39,13 @@ public class MerchantServiceTest {
         doNothing().when(merchantDBConnector).saveMerchant(Mockito.anyString());
         merchantDBConnector.saveMerchant(Mockito.anyString());
         Mockito.verify(merchantDBConnector, times(1)).saveMerchant(Mockito.anyString());
+    }
+
+    @Test
+    public void shouldUpdateMerchant() throws Exception {
+        doNothing().when(merchantDBConnector).updateMerchant(Mockito.anyString());
+        merchantDBConnector.updateMerchant(Mockito.anyString());
+        Mockito.verify(merchantDBConnector, times(1)).updateMerchant(Mockito.anyString());
     }
 
 }

@@ -40,4 +40,17 @@ public class MerchantControllerTest {
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.message", Matchers.is("Merchant Created")));
     }
+
+    @Test
+    public void shouldUpdateMerchant() throws Exception {
+        BDDMockito.willDoNothing().given(merchantService).createMerchantEvent(Mockito.any());
+        mockMvc.perform(MockMvcRequestBuilders
+                        .put("/api/tenants/merchants/{tenantId}/{siteId}",2,1)
+                        .content(TestUtil.createMerchant)
+                        .headers(TestUtil.mockHeaders())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.message", Matchers.is("Merchant Updated")));
+    }
 }
