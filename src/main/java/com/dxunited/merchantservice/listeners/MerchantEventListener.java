@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component;
 @Slf4j
 @Component
 public class MerchantEventListener {
-    private static final String GROUP_ID = "merchant_service";
+    private static final String GROUP_ID = "tenant_product_service";
 
     @Autowired
     private MerchantService merchantService;
