@@ -30,7 +30,7 @@ public class MerchantControllerTest {
 
     @Test
     public void shouldCreateMerchant() throws Exception {
-        BDDMockito.willDoNothing().given(merchantService).createMerchantEvent(Mockito.any());
+        BDDMockito.willDoNothing().given(merchantService).createMerchantEvent(Mockito.any(),Mockito.any(),Mockito.any());
         mockMvc.perform(MockMvcRequestBuilders
                         .post("/api/tenants/merchants")
                         .content(TestUtil.createMerchant)
@@ -43,7 +43,7 @@ public class MerchantControllerTest {
 
     @Test
     public void shouldUpdateMerchant() throws Exception {
-        BDDMockito.willDoNothing().given(merchantService).createMerchantEvent(Mockito.any());
+        BDDMockito.willDoNothing().given(merchantService).createMerchantEvent(Mockito.any(),Mockito.any(),Mockito.any());
         mockMvc.perform(MockMvcRequestBuilders
                         .put("/api/tenants/merchants/{tenantId}/{siteId}",2,1)
                         .content(TestUtil.createMerchant)
@@ -52,5 +52,17 @@ public class MerchantControllerTest {
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.message", Matchers.is("Merchant Updated")));
+    }
+    @Test
+    public void shouldUpdateMerchantStatus() throws Exception {
+        BDDMockito.willDoNothing().given(merchantService).createMerchantEvent(Mockito.any(),Mockito.any(),Mockito.any());
+        mockMvc.perform(MockMvcRequestBuilders
+                        .patch("/api/tenants/merchants/{tenantId}/{siteId}",2,1)
+                        .content(TestUtil.createMerchant)
+                        .headers(TestUtil.mockHeaders())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.message", Matchers.is("Merchant status updated")));
     }
 }

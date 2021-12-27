@@ -5,6 +5,7 @@ mongo:
   port: 27017
   database: merchant
   merchant_collection: merchant
+  merchant_workflow_collection: merchant_workflow
 
 kafka:
   consumer:

@@ -39,7 +39,6 @@ ext {
 
 repositories {
     mavenCentral()
-    jcenter()
 }
 
 ext {
@@ -48,19 +47,19 @@ ext {
 }
 
 dependencies {
-    implementation 'org.mongodb:mongo-java-driver:3.4.2'
-    implementation "com.google.code.gson:gson:$gsonVersion"
-    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.mongodb:mongo-java-driver:3.12.10'
+    implementation "com.google.code.gson:gson:2.8.9"
+    implementation 'org.springframework.boot:spring-boot-starter-web:2.6.1'
     implementation group: 'com.fasterxml.jackson.core', name: 'jackson-core', version: '2.12.4'
-    implementation 'org.springframework.kafka:spring-kafka'
-    implementation "io.springfox:springfox-swagger2:$swaggerVersion"
-    implementation "io.springfox:springfox-swagger-ui:$swaggerVersion"
-    implementation 'org.springframework.boot:spring-boot-starter-security'
-    implementation 'org.keycloak:keycloak-spring-boot-starter'
-    implementation 'junit:junit:4.13.1'
-    runtimeOnly 'org.postgresql:postgresql'
+    implementation 'org.springframework.kafka:spring-kafka:2.7.6'
+    implementation 'org.springframework.boot:spring-boot-starter-security:2.6.1'
+    implementation 'org.keycloak:keycloak-spring-boot-starter:15.0.2'
+    implementation 'junit:junit:4.13.2'
+    implementation 'org.apache.commons:commons-lang3:3.12.0'
+    implementation 'org.apache.commons:commons-collections4:4.4'
+    runtimeOnly 'org.postgresql:postgresql:42.3.1'
     compileOnly 'org.projectlombok:lombok:1.18.12'
-    annotationProcessor 'org.projectlombok:lombok:1.18.12'
+    annotationProcessor 'org.projectlombok:lombok:1.18.22'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation group: 'de.flapdoodle.embed', name: 'de.flapdoodle.embed.mongo', version: '2.2.0'
     testImplementation 'org.springframework.kafka:spring-kafka-test:2.7.6'

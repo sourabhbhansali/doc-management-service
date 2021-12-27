@@ -22,9 +22,9 @@ public class MerchantServiceTest {
 
     @Test
     public void shouldCreateMerchant() throws Exception {
-        doNothing().when(merchantService).createMerchantEvent(Mockito.anyString());
-        merchantService.createMerchantEvent(Mockito.anyString());
-        Mockito.verify(merchantService, times(1)).createMerchantEvent(Mockito.anyString());
+        doNothing().when(merchantService).createMerchantEvent(Mockito.anyString(),Mockito.any(),Mockito.any());
+        merchantService.createMerchantEvent(Mockito.anyString(),Mockito.any(),Mockito.any());
+        Mockito.verify(merchantService, times(1)).createMerchantEvent(Mockito.anyString(),Mockito.any(),Mockito.any());
     }
 
     @Test
@@ -36,16 +36,16 @@ public class MerchantServiceTest {
 
     @Test
     public void shouldSaveMerchant() throws Exception {
-        doNothing().when(merchantDBConnector).saveMerchant(Mockito.anyString());
-        merchantDBConnector.saveMerchant(Mockito.anyString());
-        Mockito.verify(merchantDBConnector, times(1)).saveMerchant(Mockito.anyString());
+        doNothing().when(merchantDBConnector).saveMerchant(Mockito.anyMap());
+        merchantDBConnector.saveMerchant(Mockito.anyMap());
+        Mockito.verify(merchantDBConnector, times(1)).saveMerchant(Mockito.anyMap());
     }
 
     @Test
     public void shouldUpdateMerchant() throws Exception {
-        doNothing().when(merchantDBConnector).updateMerchant(Mockito.anyString());
-        merchantDBConnector.updateMerchant(Mockito.anyString());
-        Mockito.verify(merchantDBConnector, times(1)).updateMerchant(Mockito.anyString());
+        doNothing().when(merchantDBConnector).updateMerchant(Mockito.any());
+        merchantDBConnector.updateMerchant(Mockito.any());
+        Mockito.verify(merchantDBConnector, times(1)).updateMerchant(Mockito.any());
     }
 
 }

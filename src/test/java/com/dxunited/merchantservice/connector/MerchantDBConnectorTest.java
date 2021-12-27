@@ -23,6 +23,7 @@ import org.mockito.junit.MockitoJUnitRunner;
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.util.HashMap;
+import java.util.Map;
 
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.*;
@@ -45,6 +46,7 @@ public class MerchantDBConnectorTest {
     @Mock
     MerchantDBConfig merchantDBConfig;
 
+
     @Ignore
     public void shouldSaveMerchant() throws IOException {
         doNothing().when(merchantRepository).insertMerchant(mockCollection, document);
@@ -55,8 +57,16 @@ public class MerchantDBConnectorTest {
         when(merchantDBConfig.getMerchantCollection()).thenReturn("merchant");
         when(merchantDBConnector.getMerchantCollectionFromDb()).thenReturn(mockCollection);
         when(merchantDBConnector.getMerchantCollection()).thenReturn(mockCollection);
-        merchantDBConnector.saveMerchant("{\"name\":\"sonoo\",\"salary\":600000.0,\"age\":27}");
+        merchantDBConnector.saveMerchant(getMerchantMap());
         verify(merchantRepository, times(1)).insertMerchant(mockCollection, document);
+    }
+
+    private Map<String, String> getMerchantMap() {
+        Map<String, String> merchantMap = new HashMap<>();
+        merchantMap.put("merchantId", "1");
+        merchantMap.put("merchantName", "Nike");
+        merchantMap.put("description", "sport");
+        return merchantMap;
     }
 
 }

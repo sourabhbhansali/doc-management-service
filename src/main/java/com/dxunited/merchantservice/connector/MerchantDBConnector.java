@@ -1,21 +1,29 @@
 package com.dxunited.merchantservice.connector;
 
 import com.dxunited.merchantservice.config.MerchantDBConfig;
+import com.dxunited.merchantservice.exception.ValidationException;
 import com.dxunited.merchantservice.repository.MerchantRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.gson.Gson;
+import com.mongodb.BasicDBObject;
 import com.mongodb.MongoClient;
+import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.Filters;
-import com.mongodb.client.result.DeleteResult;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.bson.Document;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicReference;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 @Slf4j
 @Component
@@ -26,7 +34,8 @@ public class MerchantDBConnector {
     private MerchantRepository merchantRepository;
     @Autowired
     private ObjectMapper mapper;
-
+    @Autowired
+    private Gson gson;
     static MongoCollection<Document> merchantCollection = null;
 
     public MongoCollection<Document> getMerchantCollection() {
@@ -47,20 +56,17 @@ public class MerchantDBConnector {
     }
 
     @SneakyThrows
-    public void saveMerchant(String createMerchant) {
-        Map<String, String> merchantMap = new ObjectMapper().readValue(createMerchant, HashMap.class);
+    public void saveMerchant(Map<String, String> merchantMap) {
         MongoCollection<Document> merchantCollection = this.getMerchantCollection();
         insertMerchant(merchantCollection, merchantMap);
     }
 
 
-    @SneakyThrows
-    public void updateMerchant(String updateMerchant) {
-        Map<String, String> merchantMap = new ObjectMapper().readValue(updateMerchant, HashMap.class);
+    public void updateMerchant(Map<String, String> merchantMap) {
         MongoCollection<Document> merchantCollection = this.getMerchantCollection();
-        merchantCollection.deleteOne(Filters.eq("merchantId", merchantMap.get("merchantId")));
+        merchantCollection.deleteOne(Filters.eq("merchantId",merchantMap.get("merchantId")));
+        merchantMap.remove("_id");
         insertMerchant(merchantCollection, merchantMap);
-
     }
 
     private void insertMerchant(MongoCollection<Document> merchantCollection, Map<String, String> merchantMap) {
@@ -69,4 +75,24 @@ public class MerchantDBConnector {
                 merchantDocument.append(entry.getKey(), entry.getValue()));
         merchantRepository.insertMerchant(merchantCollection, merchantDocument);
     }
+/*
+    public List<Map<String, String>> getMerchantVersion(Map<String, String> merchantMap) {
+        BasicDBObject whereQuery = new BasicDBObject();
+        BasicDBObject fields = new BasicDBObject();
+        whereQuery.put("merchantId", merchantMap.get("merchantId"));
+        whereQuery.put("provider", "manual");
+        whereQuery.put("tenantId", merchantMap.get("tenantId"));
+        whereQuery.put("status", "Inprogress");
+        fields.put("version", 1);
+        return executeQueryByFilter(whereQuery, fields);
+    }
+
+    public List<Map<String, String>> executeQueryByFilter(BasicDBObject whereQuery, BasicDBObject fields) {
+        MongoCollection<Document> merchantCollection = this.getMerchantCollection();
+        FindIterable<Document> documents = merchantCollection.find(whereQuery)
+                .projection(fields).sort(new BasicDBObject("timeStamp", -1));
+        return StreamSupport.stream(documents.spliterator(), false).map(document -> {
+            return (Map<String, String>) gson.fromJson(document.toJson(), Map.class);
+        }).collect(Collectors.toList());
+    }*/
 }
