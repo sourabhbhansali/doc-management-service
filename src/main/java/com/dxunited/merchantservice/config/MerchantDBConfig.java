@@ -22,5 +22,7 @@ public class MerchantDBConfig {
     private String database;
     @Value("${mongo.merchant_collection}")
     private String merchantCollection;
+    @Value("${mongo.merchant_workflow_collection}")
+    private String merchantWorkflowCollection;
 }
 

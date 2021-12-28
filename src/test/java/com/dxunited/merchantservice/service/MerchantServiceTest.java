@@ -15,29 +15,37 @@ import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
 public class MerchantServiceTest {
-    @InjectMocks
+    @Mock
     MerchantService merchantService;
-
-    @Mock
-    private MerchantRepository merchantRepository ;
-
-    @Mock
-    private MerchantEventPublisher merchantEventPublisher;
     @Mock
     MerchantDBConnector merchantDBConnector;
 
     @Test
     public void shouldCreateMerchant() throws Exception {
-        doNothing().when(merchantEventPublisher).sendMessage(Mockito.anyString(), Mockito.anyString());
-        merchantEventPublisher.sendMessage(Mockito.anyString(), Mockito.anyString());
-        Mockito.verify(merchantEventPublisher, times(1)).sendMessage(Mockito.anyString(), Mockito.anyString());
+        doNothing().when(merchantService).createMerchantEvent(Mockito.anyString(),Mockito.any(),Mockito.any());
+        merchantService.createMerchantEvent(Mockito.anyString(),Mockito.any(),Mockito.any());
+        Mockito.verify(merchantService, times(1)).createMerchantEvent(Mockito.anyString(),Mockito.any(),Mockito.any());
+    }
+
+    @Test
+    public void shouldUpdateMerchantEvent() throws Exception {
+        doNothing().when(merchantService).updateMerchantEvent(Mockito.anyString(), Mockito.anyLong(), Mockito.anyLong());
+        merchantService.updateMerchantEvent(Mockito.anyString(), Mockito.anyLong(), Mockito.anyLong());
+        Mockito.verify(merchantService, times(1)).updateMerchantEvent(Mockito.anyString(), Mockito.anyLong(), Mockito.anyLong());
     }
 
     @Test
     public void shouldSaveMerchant() throws Exception {
-        doNothing().when(merchantDBConnector).saveMerchant(Mockito.anyString());
-        merchantDBConnector.saveMerchant(Mockito.anyString());
-        Mockito.verify(merchantDBConnector, times(1)).saveMerchant(Mockito.anyString());
+        doNothing().when(merchantDBConnector).saveMerchant(Mockito.anyMap());
+        merchantDBConnector.saveMerchant(Mockito.anyMap());
+        Mockito.verify(merchantDBConnector, times(1)).saveMerchant(Mockito.anyMap());
+    }
+
+    @Test
+    public void shouldUpdateMerchant() throws Exception {
+        doNothing().when(merchantDBConnector).updateMerchant(Mockito.any());
+        merchantDBConnector.updateMerchant(Mockito.any());
+        Mockito.verify(merchantDBConnector, times(1)).updateMerchant(Mockito.any());
     }
 
 }
