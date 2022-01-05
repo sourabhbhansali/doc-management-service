@@ -5,6 +5,7 @@ import com.dxunited.merchantservice.connector.MerchantWorkflowDBConnector;
 import com.dxunited.merchantservice.constants.KafkaConstant;
 import com.dxunited.merchantservice.domain.Merchant;
 import com.dxunited.merchantservice.publisher.MerchantEventPublisher;
+import com.dxunited.merchantservice.utils.MerchantUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
@@ -55,17 +56,16 @@ public class MerchantService {
     public void updateMerchantStatus(String updateMerchant) {
         Map<String, String> merchantMap = merchant.convertStringToMap(updateMerchant);
         String status = merchantMap.get("status");
-        if (StringUtils.isNotEmpty(status) && "Approve".equalsIgnoreCase(status)) {
-            List<Map<String, String>> merchantData = merchantWorkflowDBConnector.getMerchantWfCollection(merchantMap);
-            Map<String, String> workFlowMap = merchantData.get(0);
+        if (MerchantUtil.isApprove(status) ) {
+            Map<String, String> workFlowMap  = merchantWorkflowDBConnector.getMerchantWfCollection(merchantMap);
             workFlowMap.put("status", "Active");
             merchantDBConnector.updateMerchant(workFlowMap);
-            updateMerchantDetailsInRDX(workFlowMap);
+            updateMerchantDetailsInProduct(workFlowMap);
         }
         merchantWorkflowDBConnector.deleteFromMerchantWorkflow(merchantMap);
     }
 
-    private void updateMerchantDetailsInRDX(Map<String, String> merchantMap) {
+    private void updateMerchantDetailsInProduct(Map<String, String> merchantMap) {
         String updateValue = merchant.buildMerchant(merchantMap);
         merchantEventPublisher.sendMessage(KafkaConstant.UPDATE_MERCHANT_IN_PRODUCT, updateValue);
     }

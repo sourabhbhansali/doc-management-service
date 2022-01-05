@@ -2,6 +2,7 @@ package com.dxunited.merchantservice.utils;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import org.apache.commons.lang3.StringUtils;
 
 public class MerchantUtil {
     public String getMerchantReferenceData(String merchant) {
@@ -17,5 +18,11 @@ public class MerchantUtil {
         jsonObject.addProperty("merchantUrl", merchantUrl);
         jsonObject.addProperty("supplierId", supplierId);
         return jsonObject.toString();
+    }
+
+    public static boolean isApprove(String status) {
+        if (StringUtils.isNotEmpty(status) && "Approve".equalsIgnoreCase(status))
+            return true;
+        return false;
     }
 }
