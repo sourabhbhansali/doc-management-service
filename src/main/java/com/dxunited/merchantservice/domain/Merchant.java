@@ -26,6 +26,7 @@ public class Merchant {
         merchantUpdateMap.put("updatedAt", inputMap.get("modifiedDate"));
         merchantUpdateMap.put("modifiedBy", inputMap.get("modifiedBy"));
         merchantUpdateMap.put("createdAt", inputMap.get("createdDate"));
+        merchantUpdateMap.put("category", inputMap.get("category"));
         Gson gson = new Gson();
         return gson.toJson(merchantUpdateMap);
     }
