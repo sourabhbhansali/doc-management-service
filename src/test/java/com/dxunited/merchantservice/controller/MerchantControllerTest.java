@@ -32,7 +32,7 @@ public class MerchantControllerTest {
     public void shouldCreateMerchant() throws Exception {
         BDDMockito.willDoNothing().given(merchantService).createMerchantEvent(Mockito.any(),Mockito.any(),Mockito.any());
         mockMvc.perform(MockMvcRequestBuilders
-                        .post("/api/tenants/merchants")
+                        .post("/api/tenants/merchants/{tenantId}/{siteId}",2,1)
                         .content(TestUtil.createMerchant)
                         .headers(TestUtil.mockHeaders())
                         .contentType(MediaType.APPLICATION_JSON)
