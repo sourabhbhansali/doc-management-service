@@ -14,9 +14,9 @@ public class MerchantEventPublisher {
     @Autowired
     KafkaTemplate<String, String> kafkaTemplate;
 
-    public ListenableFuture<SendResult<String, String>> sendMessage(String topic, String message) {
+    public void sendMessage(String topic, String message) {
         log.info(String.format("Producing message -> %s", message));
-        return this.kafkaTemplate.send(topic, message);
+        this.kafkaTemplate.send(topic, message);
     }
 
 }
