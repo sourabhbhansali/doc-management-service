@@ -85,15 +85,14 @@ public class MerchantWorkflowDBConnector {
         merchantWorkflowRepository.insertMerchant(merchantCollection, merchantDocument);
     }
 
-    public List<Map<String, String>> getMerchantWfCollection(Map<String, String> merchantMap) {
+    public Map<String, String> getMerchantWfCollection(Map<String, String> merchantMap) {
         MongoCollection<Document> merchantCollection = this.getMerchantWorkflowCollection();
         FindIterable<Document> documents = merchantCollection.find(Filters.eq("merchantId", merchantMap.get("merchantId")));
         List<Map<String, String>> workflowMap= StreamSupport.stream(documents.spliterator(), false).map(document -> {
             return (Map<String, String>) gson.fromJson(document.toJson(), Map.class);
         }).collect(Collectors.toList());
-
         if(CollectionUtils.isNotEmpty(workflowMap))
-            return workflowMap;
+            return workflowMap.get(0);
         else
             throw new ValidationException("No record found for update status");
     }
