@@ -1,13 +1,20 @@
 package com.dxunited.merchantservice.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.List;
+import java.util.Map;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Merchant {
+@Builder
+@JsonIgnoreProperties(ignoreUnknown = true)
+public class MerchantRequest {
     private String merchantId;
     private String externalMerchantId;
     private String merchantName;
@@ -21,11 +28,8 @@ public class Merchant {
     private String supplierId;
     private String supplierName;
     private String provider;
-
-
     private String externalMerchantCategory;
-    private String category;
-    private String subCategory;
+    private List<String> categories;
     private String status;
     private String createdDate;
     private String modifiedDate;
@@ -36,6 +40,7 @@ public class Merchant {
     private String customerTouchPoint;
     private String customerRebatePercentage;
     private String customerMaxRebate;
-
-
+    private String tenantId;
+    private String siteId;
+    private Map<String, Object> metadata;
 }
