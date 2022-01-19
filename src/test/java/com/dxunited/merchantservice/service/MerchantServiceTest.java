@@ -1,16 +1,14 @@
 package com.dxunited.merchantservice.service;
 
 import com.dxunited.merchantservice.connector.MerchantDBConnector;
-import com.dxunited.merchantservice.publisher.MerchantEventPublisher;
-import com.dxunited.merchantservice.repository.MerchantRepository;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
 
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.times;
 
 
 @RunWith(MockitoJUnitRunner.class)
@@ -22,16 +20,17 @@ public class MerchantServiceTest {
 
     @Test
     public void shouldCreateMerchant() throws Exception {
-        doNothing().when(merchantService).createMerchantEvent(Mockito.anyString(),Mockito.any(),Mockito.any());
-        merchantService.createMerchantEvent(Mockito.anyString(),Mockito.any(),Mockito.any());
-        Mockito.verify(merchantService, times(1)).createMerchantEvent(Mockito.anyString(),Mockito.any(),Mockito.any());
+        doNothing().when(merchantService).createMerchantEvent(Mockito.any());
+        merchantService.createMerchantEvent(Mockito.any());
+        Mockito.verify(merchantService, times(1)).createMerchantEvent(Mockito.any());
     }
 
     @Test
     public void shouldUpdateMerchantEvent() throws Exception {
-        doNothing().when(merchantService).updateMerchantEvent(Mockito.anyString(), Mockito.anyLong(), Mockito.anyLong());
-        merchantService.updateMerchantEvent(Mockito.anyString(), Mockito.anyLong(), Mockito.anyLong());
-        Mockito.verify(merchantService, times(1)).updateMerchantEvent(Mockito.anyString(), Mockito.anyLong(), Mockito.anyLong());
+        doNothing().when(merchantService).updateMerchantEvent(Mockito.any());
+        merchantService.updateMerchantEvent(Mockito.any());
+        Mockito.verify(merchantService, times(1))
+                .updateMerchantEvent(Mockito.any());
     }
 
     @Test

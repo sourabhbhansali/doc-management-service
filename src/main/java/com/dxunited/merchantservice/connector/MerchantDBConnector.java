@@ -1,13 +1,10 @@
 package com.dxunited.merchantservice.connector;
 
 import com.dxunited.merchantservice.config.MerchantDBConfig;
-import com.dxunited.merchantservice.exception.ValidationException;
 import com.dxunited.merchantservice.repository.MerchantRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
-import com.mongodb.BasicDBObject;
 import com.mongodb.MongoClient;
-import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.Filters;
@@ -17,13 +14,7 @@ import org.bson.Document;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-import java.util.concurrent.atomic.AtomicReference;
-import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
 
 @Slf4j
 @Component
@@ -56,20 +47,20 @@ public class MerchantDBConnector {
     }
 
     @SneakyThrows
-    public void saveMerchant(Map<String, String> merchantMap) {
+    public void saveMerchant(Map<String, Object> merchantMap) {
         MongoCollection<Document> merchantCollection = this.getMerchantCollection();
         insertMerchant(merchantCollection, merchantMap);
     }
 
 
-    public void updateMerchant(Map<String, String> merchantMap) {
+    public void updateMerchant(Map<String, Object> merchantMap) {
         MongoCollection<Document> merchantCollection = this.getMerchantCollection();
         merchantCollection.deleteOne(Filters.eq("merchantId",merchantMap.get("merchantId")));
         merchantMap.remove("_id");
         insertMerchant(merchantCollection, merchantMap);
     }
 
-    private void insertMerchant(MongoCollection<Document> merchantCollection, Map<String, String> merchantMap) {
+    private void insertMerchant(MongoCollection<Document> merchantCollection, Map<String, Object> merchantMap) {
         Document merchantDocument = new Document();
         merchantMap.entrySet().forEach(entry ->
                 merchantDocument.append(entry.getKey(), entry.getValue()));
