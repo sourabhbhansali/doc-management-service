@@ -51,7 +51,7 @@ public class MerchantService {
         MerchantRequest merchantRequest = (MerchantRequest) merchantConversion.convertStringToClass(
                 createMerchant, MerchantRequest.class);
         Map<String, Object> merchantMap = merchantConversion.convertStringToMap(createMerchant);
-        if (StringUtils.isNotEmpty(merchantRequest.getTenantId())) {
+        if (StringUtils.isNotEmpty(merchantRequest.getClientId())) {
             merchantWorkflowService.createMerchantWorkflow(merchantMap);
         } else{
             merchantDBConnector.saveMerchant(merchantMap);
@@ -71,7 +71,7 @@ public class MerchantService {
     }
 
     private void updateMerchantDetailsInProduct(Map<String, Object> merchantMap) {
-        String updateValue = merchantConversion.buildMerchantForTenantProduct(merchantMap);
+        String updateValue = merchantConversion.buildMerchantForClientProduct(merchantMap);
         merchantEventPublisher.sendMessage(KafkaConstant.UPDATE_MERCHANT_IN_PRODUCT, updateValue);
     }
 }

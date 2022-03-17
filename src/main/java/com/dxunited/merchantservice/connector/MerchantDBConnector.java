@@ -72,7 +72,7 @@ public class MerchantDBConnector {
         BasicDBObject fields = new BasicDBObject();
         whereQuery.put("merchantId", merchantMap.get("merchantId"));
         whereQuery.put("provider", "manual");
-        whereQuery.put("tenantId", merchantMap.get("tenantId"));
+        whereQuery.put("clientId", merchantMap.get("clientId"));
         whereQuery.put("status", "Inprogress");
         fields.put("version", 1);
         return executeQueryByFilter(whereQuery, fields);

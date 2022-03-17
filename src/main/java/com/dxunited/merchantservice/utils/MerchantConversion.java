@@ -56,12 +56,12 @@ public class MerchantConversion<T> {
         return new ObjectMapper().readValue(value, HashMap.class);
     }
 
-    public String buildMerchantForTenantProduct(Map<String, Object> inputMap) {
+    public String buildMerchantForClientProduct(Map<String, Object> inputMap) {
         Map<String, Object> merchantUpdateMap = new HashMap<>();
         merchantUpdateMap.put("id", inputMap.get("merchantId"));
         merchantUpdateMap.put("status",inputMap.get("status"));
         merchantUpdateMap.put("siteId", inputMap.get("siteId"));
-        merchantUpdateMap.put("tenantId", inputMap.get("tenantId"));
+        merchantUpdateMap.put("clientId", inputMap.get("clientId"));
         merchantUpdateMap.put("name", inputMap.get("merchantName"));
         merchantUpdateMap.put("merchantRank", inputMap.get("merchantRank"));
         merchantUpdateMap.put("description", inputMap.get("merchantDescription"));

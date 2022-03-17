@@ -10,7 +10,7 @@ mongo:
 kafka:
   consumer:
     bootstrap-servers: localhost:9092
-    group-id: tenant_product_service
+    group-id: client_product_service
     key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
     value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
   producer:
@@ -24,7 +24,7 @@ rest:
     enabled: true
     cors.allowed-origins: '*'
     cors.allowed-headers: '*'
-    api-matcher: /api/tenant/**
+    api-matcher: /api/**
     cors.allowed-methods: GET,POST,PUT,PATCH,DELETE,OPTIONS
     cors.max-age: 3600
     issuer-uri: http://ec2-18-191-199-237.us-east-2.compute.amazonaws.com:8080/auth/realms/internal

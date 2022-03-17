@@ -40,7 +40,7 @@ public class MerchantRequest {
     private String customerTouchPoint;
     private String customerRebatePercentage;
     private String customerMaxRebate;
-    private String tenantId;
+    private String clientId;
     private String siteId;
     private Map<String, Object> metadata;
 }

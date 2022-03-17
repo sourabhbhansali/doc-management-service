@@ -17,7 +17,7 @@ import java.util.Map;
 @Slf4j
 @Component
 public class MerchantEventListener {
-    private static final String GROUP_ID = "tenant_product_service";
+    private static final String GROUP_ID = "client_product_service";
 
     @Autowired
     private MerchantService merchantService;

@@ -57,7 +57,7 @@ public class MerchantWorkflowDBConnector {
         BasicDBObject fields = new BasicDBObject();
         whereQuery.put("merchantId", merchantMap.get("merchantId"));
         whereQuery.put("provider", "manual");
-        whereQuery.put("tenantId", merchantMap.get("tenantId"));
+        whereQuery.put("clientId", merchantMap.get("clientId"));
         // the fields to be returned from the query-only loginId, and remove _id
         fields.put("status", 1);
        List<Map<String,String>> merchantWorkflowData=executeQuery(whereQuery, fields);

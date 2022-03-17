@@ -86,3 +86,10 @@
 /build/classes/java/test/com/dxunited/merchantservice/util/TestUtil.class
 /.idea/uiDesigner.xml
 /build/classes/java/main/com/dxunited/merchantservice/exception/ValidationException.class
+/build/bootRunMainClassName
+/.idea/libraries/Gradle__org_apache_logging_log4j_log4j_core_2_14_1.xml
+/.idea/libraries/Gradle__org_apache_logging_log4j_log4j_jul_2_14_1.xml
+/.idea/libraries/Gradle__org_apache_logging_log4j_log4j_slf4j_impl_2_14_1.xml
+/.idea/libraries/Gradle__org_springframework_boot_spring_boot_starter_log4j2_2_5_2.xml
+/build/classes/java/main/com/dxunited/merchantservice/model/MerchantRequest$MerchantRequestBuilder.class
+/.gradle/buildOutputCleanup/outputFiles.bin
