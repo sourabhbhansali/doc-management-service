@@ -1,6 +1,5 @@
 package com.dxunited.merchantservice.connector;
 
-import com.dxunited.merchantservice.config.MerchantDBConfig;
 import com.dxunited.merchantservice.exception.ValidationException;
 import com.dxunited.merchantservice.repository.MerchantWorkflowRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -15,6 +14,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
 import org.bson.Document;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -25,14 +25,21 @@ import java.util.stream.StreamSupport;
 @Component
 public class MerchantWorkflowDBConnector {
 
+    @Value("${mongo.database}")
+    private String database;
+
+    @Value("${mongo.merchant_workflow_collection}")
+    private String merchantWorkflow;
+
     @Autowired
-    MerchantDBConfig merchantDBConfig;
+    private MongoClient mongoClient;
     @Autowired
     private MerchantWorkflowRepository merchantWorkflowRepository;
     @Autowired
     private ObjectMapper mapper;
     @Autowired
     private Gson gson;
+
     static MongoCollection<Document> merchantWorkflowCollection = null;
 
     public MongoCollection<Document> getMerchantWorkflowCollection() {
@@ -41,15 +48,13 @@ public class MerchantWorkflowDBConnector {
         return merchantWorkflowCollection;
     }
 
-    public MongoDatabase getDataBase(String host, int port, String database) {
-        MongoClient mongoClient = new MongoClient(host, port);
+    public MongoDatabase getDataBase() {
         return mongoClient.getDatabase(database);
     }
 
     public MongoCollection<Document> getMerchantCollectionFromDb() {
-        MongoDatabase dataBase = getDataBase(merchantDBConfig.getHost(), merchantDBConfig.getPort(), merchantDBConfig.getDatabase());
-        String mongoCollection = merchantDBConfig.getMerchantWorkflowCollection();
-        return dataBase.getCollection(mongoCollection);
+        MongoDatabase dataBase = getDataBase();
+        return dataBase.getCollection(merchantWorkflow);
     }
 
     public void validateMerchantStatus(Map<String, Object> merchantMap) {

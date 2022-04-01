@@ -1,11 +1,12 @@
 mongo:
-  host: localhost
-  username: rootuser
-  password: rootpass
-  port: 27017
-  database: merchant
+  database: dxun
   merchant_collection: merchant
   merchant_workflow_collection: merchant_workflow
+
+spring:
+  data:
+    mongodb:
+      uri: mongodb://root:admin@a892c8216ceb64dd2a6716d28d72222b-1966821236.us-east-2.elb.amazonaws.com:27017,a5703b94bace4487092fc816dfb3ccf7-813465361.us-east-2.elb.amazonaws.com:27017,a077bfdda6b44418f857791150a901cd-1940343305.us-east-2.elb.amazonaws.com:27017/dxun?replicaSet=replicaset
 
 kafka:
   consumer:
@@ -49,3 +50,15 @@ security:
       token-info-uri: ${rest.security.issuer-uri}/protocol/openid-connect/token/introspect
       user-info-uri: ${rest.security.issuer-uri}/protocol/openid-connect/userinfo
       jwt.key-value: MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAn7W0KazGxTsC9BYae/1ZwWATcd9uWOxS12mzSBYduDKEhKl6tvXCUI9Iw5SocNoFRlZYILFvr6nwLNTQmfo5EGJs+kCXVf2bYWOWmfbcUW5enJAoGtXgAXQ9WpRpn/SZxPtJ06aSVet5y+sSGmtDWqHnCqcOcLcLE1juSUHWXG93U4XXpPOY64GWlddtQXZy34XIhwfv69UuBn51PlAVXagB/C/CoPD7Tbr6otGwoFOuHD5Yu9wSX4ArJqBxQ64yoyD5tZA8wt8PWsBrDIhXjxdI/qNzQEm1CNo21lPhlbLGqzc+Xx3Ge52t0qejrodrgaQIH0bL6fCorCNF5ajLAQIDAQAB
+
+#Spring boot actuator
+management:
+  server:
+    port: 9006
+  security:
+    enabled: false
+  endpoints:
+    enabled-by-default: true
+    web:
+      exposure:
+        include: "*"

@@ -93,3 +93,16 @@
 /.idea/libraries/Gradle__org_springframework_boot_spring_boot_starter_log4j2_2_5_2.xml
 /build/classes/java/main/com/dxunited/merchantservice/model/MerchantRequest$MerchantRequestBuilder.class
 /.gradle/buildOutputCleanup/outputFiles.bin
+/build/resources/main/META-INF/build-info.properties
+/.idea/libraries/Gradle__io_micrometer_micrometer_core_1_7_1.xml
+/.idea/libraries/Gradle__org_hdrhistogram_HdrHistogram_2_1_12.xml
+/.idea/libraries/Gradle__org_latencyutils_LatencyUtils_2_0_3.xml
+/.idea/libraries/Gradle__org_mongodb_bson_4_2_3.xml
+/.idea/libraries/Gradle__org_mongodb_mongodb_driver_core_4_2_3.xml
+/.idea/libraries/Gradle__org_mongodb_mongodb_driver_sync_4_2_3.xml
+/.idea/libraries/Gradle__org_springframework_boot_spring_boot_actuator_2_5_2.xml
+/.idea/libraries/Gradle__org_springframework_boot_spring_boot_actuator_autoconfigure_2_5_2.xml
+/.idea/libraries/Gradle__org_springframework_boot_spring_boot_starter_actuator_2_5_2.xml
+/.idea/libraries/Gradle__org_springframework_boot_spring_boot_starter_data_mongodb_2_5_2.xml
+/.idea/libraries/Gradle__org_springframework_data_spring_data_commons_2_5_2.xml
+/.idea/libraries/Gradle__org_springframework_data_spring_data_mongodb_3_2_2.xml

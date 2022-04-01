@@ -1,6 +1,5 @@
 package com.dxunited.merchantservice.connector;
 
-import com.dxunited.merchantservice.config.MerchantDBConfig;
 import com.dxunited.merchantservice.repository.MerchantRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
@@ -12,6 +11,7 @@ import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.bson.Document;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.util.Map;
@@ -19,14 +19,25 @@ import java.util.Map;
 @Slf4j
 @Component
 public class MerchantDBConnector {
+
+    @Value("${mongo.database}")
+    private String database;
+
+    @Value("${mongo.merchant_collection}")
+    private String merchant;
+
     @Autowired
-    MerchantDBConfig merchantDBConfig;
+    private MongoClient mongoClient;
+
     @Autowired
     private MerchantRepository merchantRepository;
+
     @Autowired
     private ObjectMapper mapper;
+
     @Autowired
     private Gson gson;
+
     static MongoCollection<Document> merchantCollection = null;
 
     public MongoCollection<Document> getMerchantCollection() {
@@ -35,15 +46,13 @@ public class MerchantDBConnector {
         return merchantCollection;
     }
 
-    public MongoDatabase getDataBase(String host, int port, String database) {
-        MongoClient mongoClient = new MongoClient(host, port);
+    public MongoDatabase getDataBase() {
         return mongoClient.getDatabase(database);
     }
 
     public MongoCollection<Document> getMerchantCollectionFromDb() {
-        MongoDatabase dataBase = getDataBase(merchantDBConfig.getHost(), merchantDBConfig.getPort(), merchantDBConfig.getDatabase());
-        String mongoCollection = merchantDBConfig.getMerchantCollection();
-        return dataBase.getCollection(mongoCollection);
+        MongoDatabase dataBase = getDataBase();
+        return dataBase.getCollection(merchant);
     }
 
     @SneakyThrows
@@ -66,24 +75,4 @@ public class MerchantDBConnector {
                 merchantDocument.append(entry.getKey(), entry.getValue()));
         merchantRepository.insertMerchant(merchantCollection, merchantDocument);
     }
-/*
-    public List<Map<String, String>> getMerchantVersion(Map<String, String> merchantMap) {
-        BasicDBObject whereQuery = new BasicDBObject();
-        BasicDBObject fields = new BasicDBObject();
-        whereQuery.put("merchantId", merchantMap.get("merchantId"));
-        whereQuery.put("provider", "manual");
-        whereQuery.put("clientId", merchantMap.get("clientId"));
-        whereQuery.put("status", "Inprogress");
-        fields.put("version", 1);
-        return executeQueryByFilter(whereQuery, fields);
-    }
-
-    public List<Map<String, String>> executeQueryByFilter(BasicDBObject whereQuery, BasicDBObject fields) {
-        MongoCollection<Document> merchantCollection = this.getMerchantCollection();
-        FindIterable<Document> documents = merchantCollection.find(whereQuery)
-                .projection(fields).sort(new BasicDBObject("timeStamp", -1));
-        return StreamSupport.stream(documents.spliterator(), false).map(document -> {
-            return (Map<String, String>) gson.fromJson(document.toJson(), Map.class);
-        }).collect(Collectors.toList());
-    }*/
 }
