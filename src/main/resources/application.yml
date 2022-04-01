@@ -6,7 +6,7 @@ mongo:
 spring:
   data:
     mongodb:
-      uri: mongodb://root:admin@a892c8216ceb64dd2a6716d28d72222b-1966821236.us-east-2.elb.amazonaws.com:27017,a5703b94bace4487092fc816dfb3ccf7-813465361.us-east-2.elb.amazonaws.com:27017,a077bfdda6b44418f857791150a901cd-1940343305.us-east-2.elb.amazonaws.com:27017/dxun?replicaSet=replicaset
+      uri: mongodb://test:dxun123@a892c8216ceb64dd2a6716d28d72222b-1966821236.us-east-2.elb.amazonaws.com:27017,a5703b94bace4487092fc816dfb3ccf7-813465361.us-east-2.elb.amazonaws.com:27017,a077bfdda6b44418f857791150a901cd-1940343305.us-east-2.elb.amazonaws.com:27017/dxun
 
 kafka:
   consumer:
