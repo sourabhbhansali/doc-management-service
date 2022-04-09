@@ -3,8 +3,10 @@ package com.dxunited.merchantservice.controller;
 import com.dxunited.merchantservice.model.MerchantRequest;
 import com.dxunited.merchantservice.response.CreateMerchantResponse;
 import com.dxunited.merchantservice.service.MerchantService;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -32,6 +34,15 @@ public class MerchantController {
         return new ResponseEntity<>(createMerchantResponse, HttpStatus.OK);
     }
 
+    @ApiOperation(value = "Create Customer")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Customer Created"),
+            @ApiResponse(code = 401, message = "You are not authorized"),
+            @ApiResponse(code = 404, message = "Resource not found")
+    })
+
+    @ApiImplicitParam(name = HttpHeaders.AUTHORIZATION, value = "Authorization",
+            required = true, paramType = "header", dataTypeClass = String.class)
     @PutMapping
     public ResponseEntity<CreateMerchantResponse> updateMerchant(
             @RequestHeader(value = HttpHeaders.AUTHORIZATION) String authorization,
@@ -44,6 +55,15 @@ public class MerchantController {
         return new ResponseEntity<>(createMerchantResponse, HttpStatus.OK);
     }
 
+    @ApiOperation(value = "Update Merchant Status")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Merchant Status Updated"),
+            @ApiResponse(code = 401, message = "You are not authorized"),
+            @ApiResponse(code = 404, message = "Resource not found")
+    })
+
+    @ApiImplicitParam(name = HttpHeaders.AUTHORIZATION, value = "Authorization",
+            required = true, paramType = "header", dataTypeClass = String.class)
     @PatchMapping
     public ResponseEntity<CreateMerchantResponse> merchantStatusAction(
             @RequestHeader(value = HttpHeaders.AUTHORIZATION) String authorization,
