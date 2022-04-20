@@ -6,16 +6,18 @@ mongo:
 spring:
   data:
     mongodb:
-      uri: mongodb://test:dxun123@a892c8216ceb64dd2a6716d28d72222b-1966821236.us-east-2.elb.amazonaws.com:27017,a5703b94bace4487092fc816dfb3ccf7-813465361.us-east-2.elb.amazonaws.com:27017,a077bfdda6b44418f857791150a901cd-1940343305.us-east-2.elb.amazonaws.com:27017/dxun
+      host: a3827ea395cd9439690ca7ed66f1f32b-1073196539.us-east-1.elb.amazonaws.com
+      port: 27017
+      #uri: mongodb://test:dxun123@a892c8216ceb64dd2a6716d28d72222b-1966821236.us-east-2.elb.amazonaws.com:27017,a5703b94bace4487092fc816dfb3ccf7-813465361.us-east-2.elb.amazonaws.com:27017,a077bfdda6b44418f857791150a901cd-1940343305.us-east-2.elb.amazonaws.com:27017/dxun
 
 kafka:
   consumer:
-    bootstrap-servers: localhost:9092
+    bootstrap-servers: PLAINTEXT://54.160.19.201:9092
     group-id: client_product_service
     key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
     value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
   producer:
-    bootstrap-servers: localhost:9092
+    bootstrap-servers: PLAINTEXT://54.160.19.201:9092
     key-serializer: org.apache.kafka.common.serialization.StringSerializer
     value-serializer: org.apache.kafka.common.serialization.StringSerializer
 
