@@ -12,12 +12,12 @@ spring:
 
 kafka:
   consumer:
-    bootstrap-servers: PLAINTEXT://54.160.19.201:9092
+    bootstrap-servers: 54.160.19.201:9092
     group-id: client_product_service
     key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
     value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
   producer:
-    bootstrap-servers: PLAINTEXT://54.160.19.201:9092
+    bootstrap-servers: 54.160.19.201:9092
     key-serializer: org.apache.kafka.common.serialization.StringSerializer
     value-serializer: org.apache.kafka.common.serialization.StringSerializer
 
