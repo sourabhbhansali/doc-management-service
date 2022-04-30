@@ -3,64 +3,14 @@ mongo:
   merchant_collection: merchant
   merchant_workflow_collection: merchant_workflow
 
-spring:
-  data:
-    mongodb:
-      host: a3827ea395cd9439690ca7ed66f1f32b-1073196539.us-east-1.elb.amazonaws.com
-      port: 27017
-      #uri: mongodb://test:dxun123@a892c8216ceb64dd2a6716d28d72222b-1966821236.us-east-2.elb.amazonaws.com:27017,a5703b94bace4487092fc816dfb3ccf7-813465361.us-east-2.elb.amazonaws.com:27017,a077bfdda6b44418f857791150a901cd-1940343305.us-east-2.elb.amazonaws.com:27017/dxun
-
 kafka:
   consumer:
-    bootstrap-servers: 54.160.19.201:9092
     group-id: client_product_service
-    key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
-    value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
-  producer:
-    bootstrap-servers: 54.160.19.201:9092
-    key-serializer: org.apache.kafka.common.serialization.StringSerializer
-    value-serializer: org.apache.kafka.common.serialization.StringSerializer
+  key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+  value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
 
-
-rest:
-  security:
-    enabled: true
-    cors.allowed-origins: '*'
-    cors.allowed-headers: '*'
-    api-matcher: /api/**
-    cors.allowed-methods: GET,POST,PUT,PATCH,DELETE,OPTIONS
-    cors.max-age: 3600
-    issuer-uri: http://ec2-18-191-199-237.us-east-2.compute.amazonaws.com:8080/auth/realms/internal
-    resource.id: roles
-
-keycloak:
-  realm: master
-  resource: szells-server
-  auth-server-url: http://ec2-18-191-199-237.us-east-2.compute.amazonaws.com:8080/auth
-  ssl-required: none
-
-security:
-  oauth2:
-    client:
-      client-id: szells-server
-      client-secret: cef2c6e8-8ed6-4932-84b2-8789c176a9c3
-      grant-type: password
-      user-authorization-uri: http://ec2-18-191-199-237.us-east-2.compute.amazonaws.com:8080/auth/realms/internal/protocol/openid-connect/token
-      access-token-uri: http://ec2-18-191-199-237.us-east-2.compute.amazonaws.com:8080/auth/realms/internal/protocol/openid-connect/token
-      scope: openid
-    resource:
-      token-info-uri: ${rest.security.issuer-uri}/protocol/openid-connect/token/introspect
-      user-info-uri: ${rest.security.issuer-uri}/protocol/openid-connect/userinfo
-      jwt.key-value: MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAn7W0KazGxTsC9BYae/1ZwWATcd9uWOxS12mzSBYduDKEhKl6tvXCUI9Iw5SocNoFRlZYILFvr6nwLNTQmfo5EGJs+kCXVf2bYWOWmfbcUW5enJAoGtXgAXQ9WpRpn/SZxPtJ06aSVet5y+sSGmtDWqHnCqcOcLcLE1juSUHWXG93U4XXpPOY64GWlddtQXZy34XIhwfv69UuBn51PlAVXagB/C/CoPD7Tbr6otGwoFOuHD5Yu9wSX4ArJqBxQ64yoyD5tZA8wt8PWsBrDIhXjxdI/qNzQEm1CNo21lPhlbLGqzc+Xx3Ge52t0qejrodrgaQIH0bL6fCorCNF5ajLAQIDAQAB
 
 #Spring boot actuator
 management:
   server:
     port: 9006
-  security:
-    enabled: false
-  endpoints:
-    enabled-by-default: true
-    web:
-      exposure:
-        include: "*"

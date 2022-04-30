@@ -9,10 +9,10 @@ import org.springframework.context.annotation.Configuration;
 @Setter
 @Configuration
 public class KafkaProducerConfig {
-    @Value(value = "${kafka.producer.bootstrap-servers}")
+    @Value(value = "${kafka.bootstrap}")
     private String bootStrapServers;
-    @Value(value = "${kafka.producer.key-serializer}")
+    @Value(value = "${kafka.key-serializer}")
     private String keyDeserializer;
-    @Value(value = "${kafka.producer.value-serializer}")
+    @Value(value = "${kafka.value-serializer}")
     private String valueDeserializer;
 }
