@@ -14,15 +14,15 @@ spec:
         app: merchants-service
     spec:
       containers:
-        - image: cmidhun/merchants-service:0.0.1-SNAPSHOT
+        - image: testsridhar/merchants-service:0.0.1
           name: merchants-service
           imagePullPolicy: Always
           resources:
             requests:
               memory: "50Mi"
-              cpu: "500m"
+              cpu: "300m"
             limits:
-              memory: "500Mi"
-              cpu: "2000m"
+              memory: "400Mi"
+              cpu: "5000m"
           ports:
             - containerPort: 8090
