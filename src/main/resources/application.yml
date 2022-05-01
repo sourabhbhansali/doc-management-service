@@ -5,9 +5,9 @@ mongo:
 
 kafka:
   consumer:
-    group-id: client_product_service
-  key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
-  value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+    group-id: merchant_service
+  key-serializer: org.apache.kafka.common.serialization.StringSerializer
+  value-serializer: org.apache.kafka.common.serialization.StringSerializer
 
 
 #Spring boot actuator

@@ -1,5 +1,5 @@
 plugins {
-    id 'org.springframework.boot' version '2.5.2'
+    id 'org.springframework.boot' version '2.3.1.RELEASE'
     id 'io.spring.dependency-management' version '1.0.11.RELEASE'
     id 'java'
     id 'pl.allegro.tech.build.axion-release' version '1.12.0'
@@ -40,14 +40,11 @@ ext {
     set('swaggerVersion', "2.9.2")
     set('gsonVersion', "2.8.5")
     set('springCloudVersion', "Hoxton.SR8")
+    set('keycloakVersion', '7.0.1')
 }
 
 repositories {
     mavenCentral()
-}
-
-ext {
-    set('keycloakVersion', '7.0.1')
 }
 
 dependencies {
