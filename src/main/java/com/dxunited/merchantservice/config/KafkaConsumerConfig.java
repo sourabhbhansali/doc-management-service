@@ -23,7 +23,7 @@ import java.util.Map;
 @EnableKafka
 public class KafkaConsumerConfig {
 
-    @Value("${kafka.bootstrap}")
+    @Value("${kafka.producer.bootstrap-servers}")
     private String bootstrapAddress;
 
     @Value("${kafka.consumer.group-id}")
