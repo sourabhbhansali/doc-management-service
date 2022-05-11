@@ -1,26 +1,15 @@
 apiVersion: v1
 kind: Service
 metadata:
-  annotations:
-    service.beta.kubernetes.io/aws-load-balancer-backend-protocol: http
-    service.beta.kubernetes.io/aws-load-balancer-ssl-cert: arn:aws:acm:us-east-1:832700671038:certificate/ff5fc0bf-5a73-48fa-bde7-0d7da2ca015c
-    service.beta.kubernetes.io/aws-load-balancer-ssl-ports: https
-  finalizers:
-  - service.kubernetes.io/load-balancer-cleanup
   name: merchants-service
   namespace: default
 spec:
-  externalTrafficPolicy: Cluster
   ports:
   - name: http
     port: 80
     protocol: TCP
-    targetPort: 8090
-  - name: https
-    port: 443
-    protocol: TCP
-    targetPort: 8090
+    targetPort:  8090
   selector:
     app: merchants-service
-  type: LoadBalancer
-
+  sessionAffinity: None
+  type: NodePort
