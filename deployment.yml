@@ -27,7 +27,7 @@ spec:
         imagePullPolicy: Always
         name: merchants-service
         ports:
-        - containerPort: 8090
+        - containerPort: 8080
           protocol: TCP
         resources:
           limits:
