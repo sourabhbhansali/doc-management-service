@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.junit.experimental.categories.Categories;
 
 import java.util.List;
 import java.util.Map;
@@ -28,6 +29,7 @@ public class MerchantRequest {
     private String supplierId;
     private String supplierName;
     private String provider;
+    private String rewardType;
     private String externalMerchantCategory;
     private List<String> categories;
     private String status;
