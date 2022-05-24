@@ -20,8 +20,8 @@ public class MerchantUtil {
         return jsonObject.toString();
     }
 
-    public static boolean isApprove(String status) {
-        if (StringUtils.isNotEmpty(status) && "Approve".equalsIgnoreCase(status))
+    public static boolean isReviewApproved(String status) {
+        if (StringUtils.isNotEmpty(status) && "Enabled".equalsIgnoreCase(status))
             return true;
         return false;
     }

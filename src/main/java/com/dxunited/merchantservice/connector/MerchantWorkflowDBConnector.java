@@ -21,6 +21,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
+
 @Slf4j
 @Component
 public class MerchantWorkflowDBConnector {
@@ -63,11 +64,10 @@ public class MerchantWorkflowDBConnector {
         whereQuery.put("merchantId", merchantMap.get("merchantId"));
         whereQuery.put("provider", "manual");
         whereQuery.put("clientId", merchantMap.get("clientId"));
-        // the fields to be returned from the query-only loginId, and remove _id
         fields.put("status", 1);
-       List<Map<String,String>> merchantWorkflowData=executeQuery(whereQuery, fields);
+        List<Map<String, String>> merchantWorkflowData = executeQuery(whereQuery, fields);
         if (CollectionUtils.isNotEmpty(merchantWorkflowData)) {
-            throw new ValidationException("There is already Ready for review state status for given merchant.");
+            throw new ValidationException("Review is already requested for this merchant");
         }
     }
 
@@ -84,7 +84,7 @@ public class MerchantWorkflowDBConnector {
 
         MongoCollection<Document> merchantCollection = this.getMerchantWorkflowCollection();
         Document merchantDocument = new Document();
-        merchantMap.put("status", "Ready for Review");
+        merchantMap.put("status", "Review Requested");
         merchantMap.entrySet().forEach(entry ->
                 merchantDocument.append(entry.getKey(), entry.getValue()));
         merchantWorkflowRepository.insertMerchant(merchantCollection, merchantDocument);
@@ -94,20 +94,17 @@ public class MerchantWorkflowDBConnector {
         MongoCollection<Document> merchantCollection = this.getMerchantWorkflowCollection();
         FindIterable<Document> documents = merchantCollection.find(Filters.eq(
                 "merchantId", merchantMap.get("merchantId")));
-        List<Map<String, Object>> workflowMap= StreamSupport.stream(documents.spliterator(), false).map(document -> {
+        List<Map<String, Object>> workflowMap = StreamSupport.stream(documents.spliterator(), false).map(document -> {
             return (Map<String, Object>) gson.fromJson(document.toJson(), Map.class);
         }).collect(Collectors.toList());
-        if(CollectionUtils.isNotEmpty(workflowMap))
+        if (CollectionUtils.isNotEmpty(workflowMap))
             return workflowMap.get(0);
         else
             throw new ValidationException("No record found for update status");
     }
 
-    public void deleteFromMerchantWorkflow( Map<String, Object> workFlowMap) {
+    public void deleteFromMerchantWorkflow(Map<String, Object> workFlowMap) {
         MongoCollection<Document> merchantCollection = this.getMerchantWorkflowCollection();
-        merchantCollection.deleteOne(Filters.eq("merchantId",workFlowMap.get("merchantId")));
-    }
-
-    public void saveMerchant(Map<String, String> merchantMap) {
+        merchantCollection.deleteOne(Filters.eq("merchantId", workFlowMap.get("merchantId")));
     }
 }

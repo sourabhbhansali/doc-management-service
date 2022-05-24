@@ -61,9 +61,9 @@ public class MerchantService {
     public void updateMerchantStatus(String updateMerchant) {
         Map<String, Object> merchantMap = merchantConversion.convertStringToMap(updateMerchant);
         String status = (String)merchantMap.get("status");
-        if (MerchantUtil.isApprove(status) ) {
+        if (MerchantUtil.isReviewApproved(status) ) {
             Map<String, Object> workFlowMap  = merchantWorkflowService.getMerchantWfCollection(merchantMap);
-            workFlowMap.put("status", "Active");
+            workFlowMap.put("status", status);
             merchantDBConnector.updateMerchant(workFlowMap);
             updateMerchantDetailsInProduct(workFlowMap);
         }
