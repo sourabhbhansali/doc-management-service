@@ -23,6 +23,7 @@ public class MerchantRequest {
     private String merchantLogo2;
     private String merchantImage1;
     private String merchantImage2;
+    private Integer merchantRank;
     private String merchantDescription;
     private String merchantUrl;
     private String merchantGoogleMapUrl;
