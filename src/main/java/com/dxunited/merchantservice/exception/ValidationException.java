@@ -1,24 +1,24 @@
 package com.dxunited.merchantservice.exception;
 
-public class ValidationException extends RuntimeException{
+public class ValidationException extends RuntimeException {
     private static final long serialVersionUID = 1L;
 
 
-    private String message;
+    private String errorMessage;
 
-    public ValidationException() {}
-
-    @Override
-    public String getMessage() {
-        return message;
+    public ValidationException() {
     }
 
-    public void setMessage(String message) {
-        this.message = message;
+    public String getErrorMessage() {
+        return errorMessage;
     }
 
-    public ValidationException(String message){
-        this.message=message;
+    public void setErrorMessage(String errorMessage) {
+        this.errorMessage = errorMessage;
+    }
+
+    public ValidationException(String errorMessage) {
+        this.errorMessage = errorMessage;
     }
 
 
