@@ -3,6 +3,7 @@ package com.dxunited.merchantservice.connector;
 import com.dxunited.merchantservice.repository.MerchantRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
+import com.mongodb.BasicDBObject;
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
@@ -64,7 +65,7 @@ public class MerchantDBConnector {
 
     public void updateMerchant(Map<String, Object> merchantMap) {
         MongoCollection<Document> merchantCollection = this.getMerchantCollection();
-        merchantCollection.deleteOne(Filters.eq("merchantId",merchantMap.get("merchantId")));
+        merchantCollection.deleteOne(Filters.eq("merchantId", merchantMap.get("merchantId")));
         merchantMap.remove("_id");
         insertMerchant(merchantCollection, merchantMap);
     }
@@ -74,5 +75,17 @@ public class MerchantDBConnector {
         merchantMap.entrySet().forEach(entry ->
                 merchantDocument.append(entry.getKey(), entry.getValue()));
         merchantRepository.insertMerchant(merchantCollection, merchantDocument);
+    }
+
+    public Integer getNextSequence(String name) {
+        MongoDatabase db = getDataBase();
+        MongoCollection<Document> collection = db.getCollection("sequenceGenerator");
+        BasicDBObject find = new BasicDBObject();
+        find.put("_id", name);
+        BasicDBObject update = new BasicDBObject();
+        update.put("$inc", new BasicDBObject("seq", 1));
+        Document document = collection.findOneAndUpdate(find, update);
+        Integer seq = (Integer) document.get("seq");
+        return seq;
     }
 }

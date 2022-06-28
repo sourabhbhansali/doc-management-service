@@ -51,6 +51,7 @@ public class MerchantService {
         MerchantRequest merchantRequest = (MerchantRequest) merchantConversion.convertStringToClass(
                 createMerchant, MerchantRequest.class);
         Map<String, Object> merchantMap = merchantConversion.convertStringToMap(createMerchant);
+        merchantMap.put("merchantId", merchantDBConnector.getNextSequence("merchantId"));
         if (StringUtils.isNotEmpty(merchantRequest.getClientId())) {
             merchantWorkflowService.createMerchantWorkflow(merchantMap);
         } else{
