@@ -59,6 +59,7 @@ public class MerchantDBConnector {
     @SneakyThrows
     public void saveMerchant(Map<String, Object> merchantMap) {
         MongoCollection<Document> merchantCollection = this.getMerchantCollection();
+        merchantMap.put("status", "Active");
         insertMerchant(merchantCollection, merchantMap);
     }
 
