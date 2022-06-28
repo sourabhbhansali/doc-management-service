@@ -81,7 +81,7 @@ public class MerchantDBConnector {
 
     public void checkMerchantRankUnique(Integer merchantRank) {
         MongoCollection<Document> merchantCollection = this.getMerchantCollection();
-        merchantCollection.find(Filters.in("merchantRank", merchantRank));
+        convertDocumentToMerchants(merchantCollection.find(Filters.in("merchantRank", merchantRank)));
     }
 
     private void convertDocumentToMerchants(FindIterable<Document> documents) {
