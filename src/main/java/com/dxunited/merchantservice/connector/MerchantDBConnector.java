@@ -1,21 +1,29 @@
 package com.dxunited.merchantservice.connector;
 
+import com.dxunited.merchantservice.exception.ValidationException;
 import com.dxunited.merchantservice.repository.MerchantRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
 import com.mongodb.BasicDBObject;
+import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.Filters;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.collections4.MapUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.bson.Document;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+import java.util.Collections;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 @Slf4j
 @Component
@@ -69,6 +77,21 @@ public class MerchantDBConnector {
         merchantCollection.deleteOne(Filters.eq("merchantId", merchantMap.get("merchantId")));
         merchantMap.remove("_id");
         insertMerchant(merchantCollection, merchantMap);
+    }
+
+    public void checkMerchantRankUnique(Integer merchantRank) {
+        MongoCollection<Document> merchantCollection = this.getMerchantCollection();
+        merchantCollection.find(Filters.in("merchantRank", merchantRank));
+    }
+
+    private void convertDocumentToMerchants(FindIterable<Document> documents) {
+        StreamSupport.stream(documents.spliterator(), false).forEach(document -> {
+            String merchantString = document.toJson();
+            if (StringUtils.isNotEmpty(merchantString)) {
+                throw new ValidationException(
+                        "Merchant Rank should be unique, give rank already exist for other merchant");
+            }
+        });
     }
 
     private void insertMerchant(MongoCollection<Document> merchantCollection, Map<String, Object> merchantMap) {

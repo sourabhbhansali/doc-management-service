@@ -32,6 +32,7 @@ public class MerchantService {
     private MerchantConversion merchantConversion;
 
     public void createMerchantEvent(MerchantRequest merchantRequest) throws Exception {
+        merchantDBConnector.checkMerchantRankUnique(merchantRequest.getMerchantRank());
         String merchant = merchantConversion.convertObjectToJsonString(merchantRequest);
         merchantEventPublisher.sendMessage(KafkaConstant.CREATE_MERCHANT, merchant);
     }
@@ -64,6 +65,7 @@ public class MerchantService {
         String status = (String)merchantMap.get("status");
         if (MerchantUtil.isReviewApproved(status) ) {
             Map<String, Object> workFlowMap  = merchantWorkflowService.getMerchantWfCollection(merchantMap);
+            merchantDBConnector.checkMerchantRankUnique((Integer) workFlowMap.get("merchantRank"));
             workFlowMap.put("status", status);
             merchantDBConnector.updateMerchant(workFlowMap);
             updateMerchantDetailsInProduct(workFlowMap);
