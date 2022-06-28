@@ -65,7 +65,8 @@ public class MerchantService {
         String status = (String)merchantMap.get("status");
         if (MerchantUtil.isReviewApproved(status) ) {
             Map<String, Object> workFlowMap  = merchantWorkflowService.getMerchantWfCollection(merchantMap);
-            merchantDBConnector.checkMerchantRankUnique((Integer) workFlowMap.get("merchantRank"));
+            Double rank = (Double) workFlowMap.get("merchantRank");
+            merchantDBConnector.checkMerchantRankUnique(rank.intValue());
             workFlowMap.put("status", status);
             merchantDBConnector.updateMerchant(workFlowMap);
             updateMerchantDetailsInProduct(workFlowMap);

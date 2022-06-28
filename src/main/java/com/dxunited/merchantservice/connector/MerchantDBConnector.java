@@ -89,7 +89,7 @@ public class MerchantDBConnector {
             String merchantString = document.toJson();
             if (StringUtils.isNotEmpty(merchantString)) {
                 throw new ValidationException(
-                        "Merchant Rank should be unique, give rank already exist for other merchant");
+                        "Merchant Rank should be unique, given rank already exist for other merchant");
             }
         });
     }
