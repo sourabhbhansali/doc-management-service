@@ -64,7 +64,7 @@ public class MerchantController {
 
     @ApiImplicitParam(name = HttpHeaders.AUTHORIZATION, value = "Authorization",
             required = true, paramType = "header", dataTypeClass = String.class)
-    @PutMapping
+    @PutMapping("/publish")
     public ResponseEntity<CreateMerchantResponse> merchantStatusAction(
             @RequestHeader(value = HttpHeaders.AUTHORIZATION) String authorization,
             String correlationId,
