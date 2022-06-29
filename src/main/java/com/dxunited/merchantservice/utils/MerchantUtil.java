@@ -4,6 +4,10 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import org.apache.commons.lang3.StringUtils;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
 public class MerchantUtil {
     public String getMerchantReferenceData(String merchant) {
         JsonParser jsonParser = new JsonParser();
@@ -24,5 +28,16 @@ public class MerchantUtil {
         if (StringUtils.isNotEmpty(status) && "Active".equalsIgnoreCase(status))
             return true;
         return false;
+    }
+
+    public static String getCurrentDate() {
+        LocalDateTime localDateTime = LocalDateTime.now();
+        try {
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+            String formattedDate = formatter.format(localDateTime);
+            return formattedDate;
+        } catch (Exception e) {
+            throw e;
+        }
     }
 }

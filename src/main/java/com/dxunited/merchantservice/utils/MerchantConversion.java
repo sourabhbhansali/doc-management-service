@@ -63,7 +63,8 @@ public class MerchantConversion<T> {
         merchantUpdateMap.put("siteId", inputMap.get("siteId"));
         merchantUpdateMap.put("clientId", inputMap.get("clientId"));
         merchantUpdateMap.put("name", inputMap.get("merchantName"));
-        merchantUpdateMap.put("merchantRank", inputMap.get("merchantRank"));
+        Double merchantRank = (Double)inputMap.get("merchantRank");
+        merchantUpdateMap.put("merchantRank", merchantRank.intValue());
         merchantUpdateMap.put("description", inputMap.get("merchantDescription"));
         merchantUpdateMap.put("provider", inputMap.get("provider"));
         merchantUpdateMap.put("updatedAt", inputMap.get("modifiedDate"));

@@ -32,7 +32,9 @@ public class MerchantService {
     private MerchantConversion merchantConversion;
 
     public void createMerchantEvent(MerchantRequest merchantRequest) throws Exception {
-        merchantDBConnector.checkMerchantRankUnique(merchantRequest.getMerchantRank());
+        if (merchantRequest.getMerchantRank() != null) {
+            merchantDBConnector.checkMerchantRankUnique(merchantRequest.getMerchantRank());
+        }
         String merchant = merchantConversion.convertObjectToJsonString(merchantRequest);
         merchantEventPublisher.sendMessage(KafkaConstant.CREATE_MERCHANT, merchant);
     }
@@ -51,11 +53,16 @@ public class MerchantService {
     public void saveMerchant(String createMerchant) {
         MerchantRequest merchantRequest = (MerchantRequest) merchantConversion.convertStringToClass(
                 createMerchant, MerchantRequest.class);
+        merchantRequest.setCreatedDate(MerchantUtil.getCurrentDate());
+        merchantRequest.setModifiedDate(MerchantUtil.getCurrentDate());
         Map<String, Object> merchantMap = merchantConversion.convertStringToMap(createMerchant);
         merchantMap.put("merchantId", String.valueOf(merchantDBConnector.getNextSequence("merchantId")));
+        if (merchantRequest.getMerchantRank() == null) {
+            merchantMap.put("merchantRank", merchantDBConnector.getNextSequence("merchantRank"));
+        }
         if (StringUtils.isNotEmpty(merchantRequest.getClientId())) {
             merchantWorkflowService.createMerchantWorkflow(merchantMap);
-        } else{
+        } else {
             merchantDBConnector.saveMerchant(merchantMap);
         }
     }
@@ -65,9 +72,10 @@ public class MerchantService {
         String status = (String)merchantMap.get("status");
         if (MerchantUtil.isReviewApproved(status) ) {
             Map<String, Object> workFlowMap  = merchantWorkflowService.getMerchantWfCollection(merchantMap);
-            Double rank = (Double) workFlowMap.get("merchantRank");
-            merchantDBConnector.checkMerchantRankUnique(rank.intValue());
+            Double merchantRank = (Double) workFlowMap.get("merchantRank");
+            merchantDBConnector.checkMerchantRankUnique(merchantRank.intValue());
             workFlowMap.put("status", status);
+            workFlowMap.put("modifiedDate", MerchantUtil.getCurrentDate());
             merchantDBConnector.updateMerchant(workFlowMap);
             updateMerchantDetailsInProduct(workFlowMap);
         }
