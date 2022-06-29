@@ -2,6 +2,7 @@ package com.dxunited.merchantservice.connector;
 
 import com.dxunited.merchantservice.exception.ValidationException;
 import com.dxunited.merchantservice.repository.MerchantWorkflowRepository;
+import com.dxunited.merchantservice.utils.MerchantUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
 import com.mongodb.BasicDBObject;
@@ -85,6 +86,7 @@ public class MerchantWorkflowDBConnector {
         MongoCollection<Document> merchantCollection = this.getMerchantWorkflowCollection();
         Document merchantDocument = new Document();
         merchantMap.put("status", "Review Requested");
+        merchantMap.put("modifiedDate", MerchantUtil.getCurrentDate());
         merchantMap.entrySet().forEach(entry ->
                 merchantDocument.append(entry.getKey(), entry.getValue()));
         merchantWorkflowRepository.insertMerchant(merchantCollection, merchantDocument);
