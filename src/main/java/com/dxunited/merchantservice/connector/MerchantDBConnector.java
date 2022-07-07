@@ -1,7 +1,9 @@
 package com.dxunited.merchantservice.connector;
 
+import com.dxunited.merchantservice.constants.MerchantConstant;
 import com.dxunited.merchantservice.exception.ValidationException;
 import com.dxunited.merchantservice.repository.MerchantRepository;
+import com.dxunited.merchantservice.utils.MerchantUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
 import com.mongodb.BasicDBObject;
@@ -12,11 +14,13 @@ import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.Filters;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.collections4.MapUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.bson.Document;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 
 import java.util.Collections;
@@ -67,7 +71,7 @@ public class MerchantDBConnector {
     @SneakyThrows
     public void saveMerchant(Map<String, Object> merchantMap) {
         MongoCollection<Document> merchantCollection = this.getMerchantCollection();
-        merchantMap.put("status", "Active");
+        merchantMap.put("status", MerchantConstant.ENABLED);
         insertMerchant(merchantCollection, merchantMap);
     }
 
@@ -84,6 +88,19 @@ public class MerchantDBConnector {
         convertDocumentToMerchants(merchantCollection.find(Filters.in("merchantRank", merchantRank)));
     }
 
+    public Map<String, Object> getMerchantCollection(Map<String, Object> merchantMap) {
+        MongoCollection<Document> merchantCollection = this.getMerchantCollectionFromDb();
+        FindIterable<Document> documents = merchantCollection.find(Filters.eq(
+                "merchantId", merchantMap.get("merchantId")));
+        List<Map<String, Object>> workflowMap = StreamSupport.stream(documents.spliterator(), false).map(document -> {
+            return (Map<String, Object>) gson.fromJson(document.toJson(), Map.class);
+        }).collect(Collectors.toList());
+        if (CollectionUtils.isNotEmpty(workflowMap))
+            return workflowMap.get(0);
+        else
+            return Collections.emptyMap();
+    }
+
     private void convertDocumentToMerchants(FindIterable<Document> documents) {
         StreamSupport.stream(documents.spliterator(), false).forEach(document -> {
             String merchantString = document.toJson();
@@ -95,6 +112,8 @@ public class MerchantDBConnector {
     }
 
     private void insertMerchant(MongoCollection<Document> merchantCollection, Map<String, Object> merchantMap) {
+        merchantMap.put("createdDate", MerchantUtil.getCurrentDate());
+        merchantMap.put("modifiedDate", MerchantUtil.getCurrentDate());
         Document merchantDocument = new Document();
         merchantMap.entrySet().forEach(entry ->
                 merchantDocument.append(entry.getKey(), entry.getValue()));

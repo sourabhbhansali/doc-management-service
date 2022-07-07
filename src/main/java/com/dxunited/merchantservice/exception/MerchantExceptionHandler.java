@@ -47,9 +47,10 @@ public class MerchantExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(ValidationException.class)
     public ResponseEntity<GenericResponse> validationException(ValidationException validationException) {
         GenericResponse response = GenericResponse.builder().success(false)
-                .status(HttpStatus.BAD_REQUEST.value())
+                .status(validationException.getErrorCode() != 0 ?
+                        validationException.getErrorCode() : HttpStatus.BAD_REQUEST.value())
                 .message(validationException.getErrorMessage()).build();
-        return new ResponseEntity<GenericResponse>(response, HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<GenericResponse>(response, HttpStatus.valueOf(response.getStatus()));
     }
 
     @ExceptionHandler(Exception.class)

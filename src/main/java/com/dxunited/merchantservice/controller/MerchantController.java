@@ -65,13 +65,28 @@ public class MerchantController {
     @ApiImplicitParam(name = HttpHeaders.AUTHORIZATION, value = "Authorization",
             required = true, paramType = "header", dataTypeClass = String.class)
     @PutMapping("/publish")
-    public ResponseEntity<CreateMerchantResponse> merchantStatusAction(
+    @Deprecated
+    public ResponseEntity<CreateMerchantResponse> publishDiscardMerchant(
             @RequestHeader(value = HttpHeaders.AUTHORIZATION) String authorization,
             String correlationId,
             @RequestBody MerchantRequest merchantRequest) throws Exception {
         merchantservice.merchantStatusAction(merchantRequest);
         CreateMerchantResponse createMerchantResponse = CreateMerchantResponse.builder()
-                .success(true).status(HttpStatus.OK.value()).message("Merchant Status Updation Request Received")
+                .success(true).status(HttpStatus.OK.value()).message("Publish Merchant Request Received")
+                .build();
+        return new ResponseEntity<>(createMerchantResponse, HttpStatus.OK);
+    }
+
+    @ApiImplicitParam(name = HttpHeaders.AUTHORIZATION, value = "Authorization",
+            required = true, paramType = "header", dataTypeClass = String.class)
+    @PutMapping("/review/{id}/{action}")
+    public ResponseEntity<CreateMerchantResponse> updateMerchantStatus(
+            @RequestHeader(value = HttpHeaders.AUTHORIZATION) String authorization,
+            String correlationId,
+            @PathVariable String id, @PathVariable String action) throws Exception {
+        merchantservice.updateMerchantStatus(MerchantRequest.builder().merchantId(id).status(action).build());
+        CreateMerchantResponse createMerchantResponse = CreateMerchantResponse.builder()
+                .success(true).status(HttpStatus.OK.value()).message("Request Received")
                 .build();
         return new ResponseEntity<>(createMerchantResponse, HttpStatus.OK);
     }

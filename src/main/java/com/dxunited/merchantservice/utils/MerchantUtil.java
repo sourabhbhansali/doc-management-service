@@ -25,7 +25,7 @@ public class MerchantUtil {
     }
 
     public static boolean isReviewApproved(String status) {
-        if (StringUtils.isNotEmpty(status) && "Active".equalsIgnoreCase(status))
+        if (StringUtils.isNotEmpty(status) && ("Approve".equalsIgnoreCase(status) || "Enabled".equalsIgnoreCase(status)))
             return true;
         return false;
     }

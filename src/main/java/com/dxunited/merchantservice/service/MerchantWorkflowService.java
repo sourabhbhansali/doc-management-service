@@ -29,7 +29,6 @@ public class MerchantWorkflowService {
 
     @SneakyThrows
     public void createMerchantWorkflow(Map<String, Object> merchantMap) {
-        merchantWorkflowDBConnector.validateMerchantStatus(merchantMap);
         merchantWorkflowDBConnector.saveMerchantWorkflow(merchantMap);
     }
 

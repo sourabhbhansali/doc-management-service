@@ -1,5 +1,6 @@
 package com.dxunited.merchantservice.connector;
 
+import com.dxunited.merchantservice.constants.MerchantConstant;
 import com.dxunited.merchantservice.exception.ValidationException;
 import com.dxunited.merchantservice.repository.MerchantWorkflowRepository;
 import com.dxunited.merchantservice.utils.MerchantUtil;
@@ -59,17 +60,16 @@ public class MerchantWorkflowDBConnector {
         return dataBase.getCollection(merchantWorkflow);
     }
 
-    public void validateMerchantStatus(Map<String, Object> merchantMap) {
+    public boolean isMerchantAlreadyInReview(String merchantId, String clientId) {
         BasicDBObject whereQuery = new BasicDBObject();
         BasicDBObject fields = new BasicDBObject();
-        whereQuery.put("merchantId", merchantMap.get("merchantId"));
-        whereQuery.put("provider", "manual");
-        whereQuery.put("clientId", merchantMap.get("clientId"));
-        fields.put("status", 1);
+        whereQuery.put("merchantId", merchantId);
+        whereQuery.put("clientId", clientId);
         List<Map<String, String>> merchantWorkflowData = executeQuery(whereQuery, fields);
         if (CollectionUtils.isNotEmpty(merchantWorkflowData)) {
-            throw new ValidationException("Review is already requested for this merchant");
+            return true;
         }
+        return false;
     }
 
     public List<Map<String, String>> executeQuery(BasicDBObject whereQuery, BasicDBObject fields) {
@@ -85,7 +85,8 @@ public class MerchantWorkflowDBConnector {
 
         MongoCollection<Document> merchantCollection = this.getMerchantWorkflowCollection();
         Document merchantDocument = new Document();
-        merchantMap.put("status", "Review Requested");
+        merchantMap.put("status", MerchantConstant.CREATED);
+        merchantMap.put("createdDate", MerchantUtil.getCurrentDate());
         merchantMap.put("modifiedDate", MerchantUtil.getCurrentDate());
         merchantMap.entrySet().forEach(entry ->
                 merchantDocument.append(entry.getKey(), entry.getValue()));

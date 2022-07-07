@@ -45,9 +45,16 @@ public class MerchantEventListener {
 
 
     @KafkaListener(topics = KafkaConstant.UPDATE_MERCHANT_STATUS_IN_MERCHANT, containerFactory = "kafkaListenerContainerFactory")
+    public void listenPublishMerchantStatusEvent(@Payload String updateMerchant, Acknowledgment acknowledgment) {
+        log.info("consumed publish merchant event");
+        merchantService.updateMerchantStatus(updateMerchant);
+        acknowledgment.acknowledge();
+    }
+
+    @KafkaListener(topics = KafkaConstant.UPDATE_MERCHANT_STATUS, containerFactory = "kafkaListenerContainerFactory")
     public void listenUpdateMerchantStatusEvent(@Payload String updateMerchant, Acknowledgment acknowledgment) {
         log.info("consumed update merchant status event");
-        merchantService.updateMerchantStatus(updateMerchant);
+        merchantService.saveMerchantStatus(updateMerchant);
         acknowledgment.acknowledge();
     }
 }
