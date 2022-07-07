@@ -109,8 +109,8 @@ public class MerchantService {
         String status = (String)merchantMap.get("status");
         if (MerchantConstant.APPROVED.equalsIgnoreCase(status)) {
             Map<String, Object> merchantWorkflowData = merchantWorkflowService.getMerchantWfCollection(merchantMap);
-            Double merchantRank = (Double) merchantWorkflowData.get("merchantRank");
-            merchantDBConnector.checkMerchantRankUnique(merchantRank.intValue());
+            // Double merchantRank = (Double) merchantWorkflowData.get("merchantRank");
+            // merchantDBConnector.checkMerchantRankUnique(merchantRank.intValue());
             merchantWorkflowData.put("status", MerchantConstant.CREATED);
             merchantWorkflowData.put("modifiedDate", MerchantUtil.getCurrentDate());
             merchantDBConnector.updateMerchant(merchantWorkflowData);
