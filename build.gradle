@@ -2,22 +2,16 @@ plugins {
     id 'org.springframework.boot' version '2.3.1.RELEASE'
     id 'io.spring.dependency-management' version '1.0.11.RELEASE'
     id 'java'
-    id 'pl.allegro.tech.build.axion-release' version '1.12.0'
-    id 'com.palantir.docker' version '0.25.0'
-    id 'com.palantir.docker-run' version '0.25.0'
-    id 'jp.classmethod.aws.cloudformation' version '0.41'
-    id 'com.palantir.docker-compose' version '0.22.1'
     id 'jacoco'
-    id 'org.sonarqube' version '3.0'
 }
 
-group = 'com.dxunited'
+group = 'com.doc'
 version = '0.0.1'
 sourceCompatibility = '8'
 
 jar {
     manifest {
-        attributes 'Main-Class': 'com.dxunited.merchantservice.MerchantServiceApplication'
+        attributes 'Main-Class': 'com.doc.management.DocManagementServiceApplication'
     }
 }
 
@@ -36,39 +30,22 @@ springBoot {
     buildInfo()
 }
 
-ext {
-    set('swaggerVersion', "2.9.2")
-    set('gsonVersion', "2.8.5")
-    set('springCloudVersion', "Hoxton.SR8")
-    set('keycloakVersion', '7.0.1')
-}
 
 repositories {
     mavenCentral()
 }
 
 dependencies {
-    implementation "com.google.code.gson:gson:2.8.9"
     implementation 'org.springframework.boot:spring-boot-starter-web:2.6.1'
-    implementation 'org.springframework.cloud:spring-cloud-starter-config:2.2.8.RELEASE'
     implementation 'org.springframework.boot:spring-boot-starter-log4j2'
     implementation group: 'com.fasterxml.jackson.core', name: 'jackson-core', version: '2.12.4'
-    implementation 'org.springframework.kafka:spring-kafka:2.7.6'
-    implementation 'org.springframework.boot:spring-boot-starter-security:2.6.1'
-    implementation 'org.keycloak:keycloak-spring-boot-starter:15.0.2'
     implementation 'junit:junit:4.13.2'
     implementation 'org.apache.commons:commons-lang3:3.12.0'
     implementation 'org.apache.commons:commons-collections4:4.4'
-    implementation "io.springfox:springfox-swagger2:$swaggerVersion"
-    implementation "io.springfox:springfox-swagger-ui:$swaggerVersion"
-    runtimeOnly 'org.postgresql:postgresql:42.3.1'
     compileOnly 'org.projectlombok:lombok:1.18.12'
-    compile group: 'org.springframework.boot', name: 'spring-boot-starter-actuator'
+    implementation 'com.googlecode.json-simple:json-simple:1.1.1'
     annotationProcessor 'org.projectlombok:lombok:1.18.22'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
-    implementation 'org.springframework.boot:spring-boot-starter-data-mongodb'
-    testImplementation group: 'de.flapdoodle.embed', name: 'de.flapdoodle.embed.mongo', version: '2.2.0'
-    testImplementation 'org.springframework.kafka:spring-kafka-test:2.7.6'
     runtimeOnly 'org.springframework.boot:spring-boot-devtools'
     testImplementation('org.junit.jupiter:junit-jupiter-api:5.6.2')
     testImplementation('org.junit.jupiter:junit-jupiter-engine:5.6.2')
@@ -78,32 +55,6 @@ dependencies {
     testImplementation('org.mockito:mockito-inline:3.4.0')
 }
 
-apply plugin: 'java'
-String dockerHubUsernameProperty = findProperty('dockerHubUsername') ?: 'testsridhar'
-String imageName = "${dockerHubUsernameProperty}/merchants-service:$version"
-docker {
-    name imageName
-    files "build/libs/${bootJar.archiveFileName.get()}"
-    buildArgs([JAR_FILE: bootJar.archiveFileName.get()])
-}
-dockerRun {
-    name project.name
-    image imageName
-    ports '8080:8080'
-    clean true
-}
-sonarqube {
-    properties {
-        property 'sonar.host.url', 'http://localhost:9000'
-    }
-}
-tasks['sonarqube'].dependsOn test
-dependencyManagement {
-    imports {
-        mavenBom "org.keycloak.bom:keycloak-adapter-bom:${keycloakVersion}"
-        mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
-    }
-}
 test {
     ignoreFailures = true
 }

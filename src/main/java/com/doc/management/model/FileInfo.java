@@ -1,4 +1,4 @@
-package com.doc.management.response;
+package com.doc.management.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;

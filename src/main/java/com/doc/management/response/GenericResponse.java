@@ -1,4 +1,4 @@
-package com.dxunited.doc.management.response;
+package com.doc.management.response;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;

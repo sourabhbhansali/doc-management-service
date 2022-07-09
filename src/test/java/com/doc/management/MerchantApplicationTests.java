@@ -1,4 +1,4 @@
-package com.dxunited.doc.management;
+package com.doc.management;
 
 import org.springframework.boot.test.context.SpringBootTest;
 

@@ -1,10 +1,7 @@
 package com.doc.management.constants;
 
-public interface MerchantConstant {
+public interface DocConstant {
 
-    String CREATED = "Created";
-    String ENABLED = "Enabled";
-    String DISABLED = "Disabled";
-    String APPROVED = "Approved";
-    String REJECTED = "Rejected";
+    String UPLOAD_FILE_DIRECTORY = "uploads";
+
 }

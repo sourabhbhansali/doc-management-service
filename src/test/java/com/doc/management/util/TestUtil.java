@@ -1,4 +1,4 @@
-package com.dxunited.doc.management.util;
+package com.doc.management.util;
 
 import org.springframework.http.HttpHeaders;
 
