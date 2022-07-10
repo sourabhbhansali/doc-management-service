@@ -1,5 +1,6 @@
 package com.doc.management.controller;
 
+import com.doc.management.constants.DocConstant;
 import com.doc.management.exception.ValidationException;
 import com.doc.management.model.FileInfo;
 import com.doc.management.response.GenericResponse;
@@ -32,22 +33,26 @@ public class DocManagementController {
         String message = "";
         try {
             docManagementService.save(file);
-            message = "File Uploaded Successfully !!!";
+            message = DocConstant.UPLOADED;
+            log.info("file uploaded !!");
             return ResponseEntity.status(HttpStatus.OK).body(GenericResponse.builder().message(message).build());
         } catch (ValidationException e) {
+            log.error(e.getMessage());
             throw new ValidationException(e.getErrorCode(), e.getErrorMessage());
         } catch (Exception e) {
+            log.error(e.getMessage());
             throw e;
         }
     }
 
     @GetMapping
     public ResponseEntity<List<FileInfo>> getAllFiles() {
+        log.info("fetch all files");
         List<FileInfo> fileInfos = null;
         try {
             fileInfos = docManagementService.getAllFiles();
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error(e.getMessage());
         }
         return ResponseEntity.status(HttpStatus.OK).body(fileInfos);
     }
@@ -55,6 +60,7 @@ public class DocManagementController {
     @GetMapping("/{filename:.+}")
     @ResponseBody
     public ResponseEntity<Resource> getFile(@PathVariable String filename) {
+        log.info("download file");
         Resource file = docManagementService.load(filename);
         return ResponseEntity.ok()
                 .header(HttpHeaders.CONTENT_DISPOSITION,

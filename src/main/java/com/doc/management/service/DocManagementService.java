@@ -46,11 +46,14 @@ public class DocManagementService {
             String fileExtension = fileName.substring(
                     fileName.indexOf(".") != -1 ? fileName.indexOf(".") + 1 : 0, fileName.length());
             if (!fileExtensions.contains(fileExtension)) {
-                throw new ValidationException(HttpStatus.BAD_REQUEST.value(), "Supported file formats are :: "+fileExtensions.toString());
+                throw new ValidationException(HttpStatus.BAD_REQUEST.value(),
+                        "Supported file formats are :: "+fileExtensions.toString());
             }
             Files.copy(file.getInputStream(), uploadPath.resolve(file.getOriginalFilename()));
+            log.info("file uploaded");
             saveMetadata( FileInfo.builder().fileName(fileName)
-                    .createdBy("Admin").createdOn(Util.getCurrentDate()).fileType("Annual Report").build());
+                    .createdBy(DocConstant.CREATED_BY).createdOn(Util.getCurrentDate())
+                    .fileType(DocConstant.FILE_TYPE).build());
         } catch (ValidationException ve) {
             throw ve;
         } catch (IOException e) {
@@ -59,6 +62,7 @@ public class DocManagementService {
     }
 
     public void saveMetadata(FileInfo fileInfo) {
+        log.info("save file metadata");
         try {
             List<FileInfo> allFiles = new ArrayList<>();
             List<FileInfo> availableFiles = getAllFiles();
@@ -80,18 +84,19 @@ public class DocManagementService {
                 jsonObject.put("createdOn", fileInfo1.getCreatedOn());
                 jsonArray.add(jsonObject);
             });
-            try (FileWriter fileWriter = new FileWriter("src/main/resources/data.json")) {
+            try (FileWriter fileWriter = new FileWriter(DocConstant.FILE_PATH)) {
                 fileWriter.write(jsonArray.toJSONString());
                 fileWriter.flush();
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error(e.getMessage());
         }
     }
 
     public List<FileInfo> getAllFiles() throws Exception {
+        log.info("fetch all files");
         try {
-            File file = new File("src/main/resources/data.json");
+            File file = new File(DocConstant.FILE_PATH);
             if (!file.exists() || file.length() == 0L) {
                 return Collections.emptyList();
             }
@@ -99,12 +104,13 @@ public class DocManagementService {
             FileInfo[] fileInfos = objectMapper.readValue(file, FileInfo[].class);
             return fileInfos != null ? Arrays.asList(fileInfos) : Collections.emptyList();
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error(e.getMessage());
         }
         return Collections.emptyList();
     }
 
     public Resource load(String filename) {
+        log.info("Download file");
         try {
             Path file = uploadPath.resolve(filename);
             Resource resource = new UrlResource(file.toUri());
@@ -114,7 +120,8 @@ public class DocManagementService {
                 throw new RuntimeException("Could not read the file!");
             }
         } catch (MalformedURLException e) {
-            throw new RuntimeException("Error: " + e.getMessage());
+            log.error(e.getMessage());
+            throw new ValidationException("Download failed: " + e.getMessage());
         }
     }
 }
