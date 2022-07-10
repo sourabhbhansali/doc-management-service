@@ -32,7 +32,7 @@ public class DocManagementController {
         String message = "";
         try {
             docManagementService.save(file);
-            message = "File Uploaded Successfully !!! " + file.getOriginalFilename();
+            message = "File Uploaded Successfully !!!";
             return ResponseEntity.status(HttpStatus.OK).body(GenericResponse.builder().message(message).build());
         } catch (ValidationException e) {
             throw new ValidationException(e.getErrorCode(), e.getErrorMessage());

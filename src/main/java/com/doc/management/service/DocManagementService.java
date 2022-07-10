@@ -90,13 +90,18 @@ public class DocManagementService {
     }
 
     public List<FileInfo> getAllFiles() throws Exception {
-        File file = new File("src/main/resources/data.json");
-        if (!file.exists() || file.length() == 0L) {
-            return Collections.emptyList();
+        try {
+            File file = new File("src/main/resources/data.json");
+            if (!file.exists() || file.length() == 0L) {
+                return Collections.emptyList();
+            }
+            ObjectMapper objectMapper = new ObjectMapper();
+            FileInfo[] fileInfos = objectMapper.readValue(file, FileInfo[].class);
+            return fileInfos != null ? Arrays.asList(fileInfos) : Collections.emptyList();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        ObjectMapper objectMapper = new ObjectMapper();
-        FileInfo[] fileInfos = objectMapper.readValue(file, FileInfo[].class);
-        return fileInfos != null ? Arrays.asList(fileInfos) : Collections.emptyList();
+        return Collections.emptyList();
     }
 
     public Resource load(String filename) {
@@ -112,14 +117,4 @@ public class DocManagementService {
             throw new RuntimeException("Error: " + e.getMessage());
         }
     }
-
-    /*public Stream<Path> loadAll() {
-        try {
-            return Files.walk(this.uploadPath, 1)
-                    .filter(path -> !path.equals(this.uploadPath))
-                    .map(this.uploadPath::relativize);
-        } catch (IOException e) {
-            throw new RuntimeException("Could not load the files!");
-        }
-    }*/
 }
